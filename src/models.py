@@ -7,23 +7,49 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class User(Base):
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
+    username = Column(String(250), ForeignKey('messages'),ForeignKey('notifications'),ForeignKey('feed'), nullable=False)
     name = Column(String(250), nullable=False)
+    posts = Column(String(250), nullable=False)
+    activity = Column(String(250), nullable=False)
+    followers = Column(String(250), nullable=False)
+    following = Column(String(250), nullable=False)
+    likes = Column(String(250), nullable=False)
+    histories = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+class Messages(Base):
+    __tablename__ = 'messages'
+
+    chat_id = Column(Integer, primary_key=True)
+    group_id = Column(String(250))
+    following_status = Column(String(250)), ForeignKey('user.following')
+    message_requests = Column(String(250), nullable=False)
+    calls = Column(Integer)
+
+class Notifications(Base):
+    __tablename__ = 'notifications'
+
+    comments = Column(Integer, primary_key=True)
+    tags = Column(String(250))
+    follows = Column(String(250))
+    follows_requests = Column(String(250), nullable=False)
+
+class Feed(Base):
+    __tablename__ = 'feed'
+
+    following_posts = Column(Integer, primary_key=True)
+    ads_posts = Column(Integer), ForeignKey('user.activity')
+    comments = Column(String(250))
+    likes = Column(String(250), nullable=False)
+
+
+
+
+
+
+
 
     def to_dict(self):
         return {}
