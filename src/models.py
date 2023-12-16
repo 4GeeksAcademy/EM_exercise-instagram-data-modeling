@@ -10,7 +10,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String(250), ForeignKey('messages'),ForeignKey('notifications'),ForeignKey('feed'), nullable=False)
+    username = Column(String(250), nullable=False)
     name = Column(String(250), nullable=False)
     posts = Column(String(250), nullable=False)
     activity = Column(String(250), nullable=False)
@@ -19,37 +19,22 @@ class User(Base):
     likes = Column(String(250), nullable=False)
     histories = Column(String(250), nullable=False)
 
-class Messages(Base):
-    __tablename__ = 'messages'
+class Posts(Base):
+    __tablename__ = 'posts'
 
     chat_id = Column(Integer, primary_key=True)
-    group_id = Column(String(250))
+    group_id = Column(String(250),ForeignKey('user'))
     following_status = Column(String(250)), ForeignKey('user.following')
     message_requests = Column(String(250), nullable=False)
     calls = Column(Integer)
 
-class Notifications(Base):
-    __tablename__ = 'notifications'
+class Comments(Base):
+    __tablename__ = 'comments'
 
     comments = Column(Integer, primary_key=True)
-    tags = Column(String(250))
+    tags = Column(String(250),ForeignKey('posts'))
     follows = Column(String(250))
     follows_requests = Column(String(250), nullable=False)
-
-class Feed(Base):
-    __tablename__ = 'feed'
-
-    following_posts = Column(Integer, primary_key=True)
-    ads_posts = Column(Integer), ForeignKey('user.activity')
-    comments = Column(String(250))
-    likes = Column(String(250), nullable=False)
-
-
-
-
-
-
-
 
     def to_dict(self):
         return {}
